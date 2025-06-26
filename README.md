@@ -1,4 +1,4 @@
-# KRG Makros Übersicht und Funktionsumfang
+# "KRG (Kriminalgericht) Makros": Übersicht und Funktionsumfang
 
 ## Ausgangslage/Problemstellung
 
