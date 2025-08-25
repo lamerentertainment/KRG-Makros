@@ -1,8 +1,8 @@
 '''Windows API für Zwischenablagaufruf, Deklarationen
-Declare Function OpenClipboard Lib "User32" (ByVal hwnd As Long) _
+Declare Function OpenClipboard Lib "user32" (ByVal hWnd As Long) _
    As Long
-Declare Function CloseClipboard Lib "User32" () As Long
-Declare Function GetClipboardData Lib "User32" (ByVal wFormat As _
+Declare Function CloseClipboard Lib "user32" () As Long
+Declare Function GetClipboardData Lib "user32" (ByVal wFormat As _
    Long) As Long
 Declare Function GlobalAlloc Lib "kernel32" (ByVal wFlags&, ByVal _
    dwBytes As Long) As Long
@@ -80,7 +80,7 @@ Dim RegexObject As Object
 Set RegexObject = CreateObject("VBScript.RegExp")
 RegexObject.Global = True
 RegexObject.MultiLine = True
-RegexObject.Pattern = Muster
+RegexObject.pattern = Muster
 ersetze = RegexObject.Replace(MyString, Ersatz)
 
 End Function
@@ -98,7 +98,7 @@ Dim redewendungsausnahmen As String
 redewendungsausnahmen = "(?!\s*Logis|\s*nach|\s*zu|\s*O\s*)"
 
 'Set the regex pattern to match the word bzw. verb and the rest of the clause until the occurence of ".", ",", "!", "?" or "und" "oder" (the last occurence ist die letzte Gruppe)
-regEx.Pattern = verb & _
+regEx.pattern = verb & _
                 "(.*?)" & _
                 "(\.|,|!|\?|:|\bund\b" & redewendungsausnahmen & "|\boder\b)" & _
                 "(.*?|$)" & _
@@ -151,33 +151,33 @@ regEx.Pattern = verb & _
             If groups(3) = "." And IsNumeric(Right(groups(2), 1)) Then
                 'Folgt nach der Abkürzung und Währungsangabe ein "und" oder "oder" als Satzteilende, muss der Leerschlag beim hilfsverb anders gesetzt werden
                 If groups(5) = "und" Or groups(5) = "oder" Then
-                    text = Replace(text, match.Value, verbersetzung + groups(0) + groups(1) + groups(2) + groups(3) + groups(4) + hilfsverb + " " + groups(5))
+                    text = Replace(text, match.value, verbersetzung + groups(0) + groups(1) + groups(2) + groups(3) + groups(4) + hilfsverb + " " + groups(5))
                 Else
-                    text = Replace(text, match.Value, verbersetzung + groups(0) + groups(1) + groups(2) + groups(3) + groups(4) + " " + hilfsverb + groups(5))
+                    text = Replace(text, match.value, verbersetzung + groups(0) + groups(1) + groups(2) + groups(3) + groups(4) + " " + hilfsverb + groups(5))
                 End If
             'wenn groups(3) ein "und" oder "oder" ist braucht es einen anderen leerschlag beim hilfsverb
             ElseIf groups(3) = "und" Or groups(3) = "oder" Then
-                text = Replace(text, match.Value, verbersetzung + groups(0) + groups(1) + groups(2) + hilfsverb + " " + groups(3) + groups(4) + groups(5))
+                text = Replace(text, match.value, verbersetzung + groups(0) + groups(1) + groups(2) + hilfsverb + " " + groups(3) + groups(4) + groups(5))
             Else
-                text = Replace(text, match.Value, verbersetzung + groups(0) + groups(1) + groups(2) + " " + hilfsverb + groups(3) + groups(4) + groups(5))
+                text = Replace(text, match.value, verbersetzung + groups(0) + groups(1) + groups(2) + " " + hilfsverb + groups(3) + groups(4) + groups(5))
             End If
         'Wenn  groups(1) ein Punkt ist und der letzte Charakter von groups(0) eine Zahl , dürfte es sich um einen Währungsbetrag ohne vorangehende Fr. abkürzung handeln
         ElseIf groups(1) = "." And IsNumeric(Right(groups(0), 1)) Then
             'Folgt nach der Abkürzung und Währungsangabe ein "und" oder "oder" als Satzteilende, muss der Leerschlag beim hilfsverb anders gesetzt werden
             If groups(3) = "und" Or groups(3) = "oder" Then
-                text = Replace(text, match.Value, verbersetzung + groups(0) + groups(1) + groups(2) + hilfsverb + " " + groups(3) + groups(4) + groups(5))
+                text = Replace(text, match.value, verbersetzung + groups(0) + groups(1) + groups(2) + hilfsverb + " " + groups(3) + groups(4) + groups(5))
             'wenn zusätzlich noch groups(3) ein Punkt ist und der letzte Charakter von Groups(2) eine Zahl, dürfte es sich um einen Datumsabkürzung "08.08.2001" handeln
             ElseIf groups(3) = "." And IsNumeric(Right(groups(2), 1)) Then
-                text = Replace(text, match.Value, verbersetzung + groups(0) + groups(1) + groups(2) + groups(3) + groups(4) + " " + hilfsverb + groups(5))
+                text = Replace(text, match.value, verbersetzung + groups(0) + groups(1) + groups(2) + groups(3) + groups(4) + " " + hilfsverb + groups(5))
             Else
-                text = Replace(text, match.Value, verbersetzung + groups(0) + groups(1) + groups(2) + " " + hilfsverb + groups(3) + groups(4) + groups(5))
+                text = Replace(text, match.value, verbersetzung + groups(0) + groups(1) + groups(2) + " " + hilfsverb + groups(3) + groups(4) + groups(5))
             End If
         'ist groups(1) ein "und" oder "oder" müssen die Leerzeichen anders gesetzt werden
         ElseIf groups(1) = "und" Or groups(1) = "oder" Then
-            text = Replace(text, match.Value, verbersetzung + groups(0) + hilfsverb + " " + groups(1) + groups(2) + groups(3) + groups(4) + groups(5))
+            text = Replace(text, match.value, verbersetzung + groups(0) + hilfsverb + " " + groups(1) + groups(2) + groups(3) + groups(4) + groups(5))
         'Es wurde keine Abkürzung erkannt
         Else
-            text = Replace(text, match.Value, verbersetzung + groups(0) + " " + hilfsverb + groups(1) + groups(2) + groups(3) + groups(4) + groups(5))
+            text = Replace(text, match.value, verbersetzung + groups(0) + " " + hilfsverb + groups(1) + groups(2) + groups(3) + groups(4) + groups(5))
         End If
     Next match
     
@@ -1706,6 +1706,18 @@ Private Function VerbenErsetzung(textstelle As String) As String
     textstelle = Replace(textstelle, " zeugt ", " zeuge ")
     textstelle = Replace(textstelle, " zeugt,", " zeuge,")
     textstelle = Replace(textstelle, " zeugt.", " zeuge.")
+    'es lässt
+    textstelle = Replace(textstelle, " lässt ", " lasse ")
+    textstelle = Replace(textstelle, " lässt,", " lasse,")
+    textstelle = Replace(textstelle, " lässt.", " lasse.")
+    'es bestätigt
+    textstelle = Replace(textstelle, " bestätigt ", " bestätige ")
+    textstelle = Replace(textstelle, " bestätigt,", " bestätige,")
+    textstelle = Replace(textstelle, " bestätigt.", " bestätige.")
+    'es bedarf
+    textstelle = Replace(textstelle, " bedarf ", " bedürfe ")
+    textstelle = Replace(textstelle, " bedarf,", " bedürfe,")
+    textstelle = Replace(textstelle, " bedarf.", " bedürfe.")
     
     
     
@@ -2903,6 +2915,98 @@ Private Function VergangenheitsVerbenErsetzung(text As String)
     text = ersetzeVergangenheitsform(text, " deckte ", " habe ", "gedeckt")
     'Wir deckten es. -> Sie hätten es gedeckt.
     text = ersetzeVergangenheitsform(text, " deckten ", " hätten ", "gedeckt")
+    'Ich weckte ihn. -> er habe diesen geweckt.
+    text = ersetzeVergangenheitsform(text, " weckte ", " habe ", "geweckt")
+    'Wir weckten uns. -> Sie hätten sich geweckt.
+    text = ersetzeVergangenheitsform(text, " weckten ", " hätten ", "geweckt")
+    'Ich lallte nur noch. -> er habe nur noch gelallt.
+    text = ersetzeVergangenheitsform(text, " lallte ", " habe ", "gelallt")
+    'Wir lallten miteinander. -> Sie hätten miteinander gelallt.
+    text = ersetzeVergangenheitsform(text, " lallten ", " hätten ", "gelallt")
+    'Ich ergab mich. -> er habe sich ergeben.
+    text = ersetzeVergangenheitsform(text, " ergab ", " habe ", "ergeben")
+    'Wir ergaben uns. -> Sie hätten sich ergeben.
+    text = ersetzeVergangenheitsform(text, " ergaben ", " hätten ", "ergeben")
+    'Ich übergab mich. -> er habe sich übergeben.
+    text = ersetzeVergangenheitsform(text, " übergab ", " habe ", "übergeben")
+    'Wir übergaben es. -> Sie hätten es übergeben.
+    text = ersetzeVergangenheitsform(text, " übergeben ", " hätten ", "übergeben")
+    'Ich deckte etwas. -> er habe etwas gedeckt.
+    text = ersetzeVergangenheitsform(text, " deckte ", " habe ", "gedeckt")
+    'Wir deckten etwas. -> Sie hätten etwas gedeckt.
+    text = ersetzeVergangenheitsform(text, " deckten ", " hätten ", "gedeckt")
+    'Ich weckte jemanden. -> er habe jemanden geweckt.
+    text = ersetzeVergangenheitsform(text, " weckte ", " habe ", "geweckt")
+    'Wir weckten jemanden. -> Sie hätten jemanden geweckt.
+    text = ersetzeVergangenheitsform(text, " weckten ", " hätten ", "geweckt")
+    'Ich genoss es. -> er habe es genossen.
+    text = ersetzeVergangenheitsform(text, " genoss ", " habe ", "genossen")
+    'Wir genossen es. -> Sie hätten es genossen.
+    text = ersetzeVergangenheitsform(text, " genossen ", " hätten ", "genossen")
+    'Ich glich jemandem. -> er habe jemandem geglichen.
+    text = ersetzeVergangenheitsform(text, " glich ", " habe ", "geglichen")
+    'Wir glichen jemandem. -> Sie hätten jemandem geglichen.
+    text = ersetzeVergangenheitsform(text, " glichen ", " hätten ", "geglichen")
+    'Ich griff danach. -> er habe danach gegriffen.
+    text = ersetzeVergangenheitsform(text, " griff ", " habe ", "gegriffen")
+    'Wir griffen danach. -> Sie hätten danach gegriffen.
+    text = ersetzeVergangenheitsform(text, " griffen ", " hätten ", "gegriffen")
+    'Das Bild hing an der Wand. -> es habe an der Wand gehangen.
+    text = ersetzeVergangenheitsform(text, " hing ", " habe ", "gehangen")
+    'Die Bilder hingen an der Wand. -> sie hätten an der Wand gehangen.
+    text = ersetzeVergangenheitsform(text, " hingen ", " hätten ", "gehangen")
+    'Ich litt sehr. -> er habe sehr gelitten.
+    text = ersetzeVergangenheitsform(text, " litt ", " habe ", "gelitten")
+    'Wir litten sehr. -> Sie hätten sehr gelitten.
+    text = ersetzeVergangenheitsform(text, " litten ", " hätten ", "gelitten")
+    'Ich schob den Tisch. -> er habe den Tisch geschoben.
+    text = ersetzeVergangenheitsform(text, " schob ", " habe ", "geschoben")
+    'Wir schoben den Tisch. -> Sie hätten den Tisch geschoben.
+    text = ersetzeVergangenheitsform(text, " schoben ", " hätten ", "geschoben")
+    'Ich stritt mich. -> er habe sich gestritten.
+    text = ersetzeVergangenheitsform(text, " stritt ", " habe ", "gestritten")
+    'Wir stritten uns. -> Sie hätten sich gestritten.
+    text = ersetzeVergangenheitsform(text, " stritten ", " hätten ", "gestritten")
+    'Ich empfahl das Buch. -> er habe das Buch empfohlen.
+    text = ersetzeVergangenheitsform(text, " empfahl ", " habe ", "empfohlen")
+    'Wir empfahlen das Buch. -> Sie hätten das Buch empfohlen.
+    text = ersetzeVergangenheitsform(text, " empfahlen ", " hätten ", "empfohlen")
+    'Ich stahl das Geld. -> er habe das Geld gestohlen.
+    text = ersetzeVergangenheitsform(text, " stahl ", " habe ", "gestohlen")
+    'Wir stahlen das Geld. -> Sie hätten das Geld gestohlen.
+    text = ersetzeVergangenheitsform(text, " stahlen ", " hätten ", "gestohlen")
+    'Ich vermittelte den Kontakt. -> er habe den Kontakt vermittelt.
+    text = ersetzeVergangenheitsform(text, " vermittelte ", " habe ", "vermittelt")
+    'Ich erinnerte mich. -> er habe sich erinnert.
+    text = ersetzeVergangenheitsform(text, " erinnerte ", " habe ", "erinnert")
+    'Wir erinnerten uns. -> Sie hätten sich erinnert.
+    text = ersetzeVergangenheitsform(text, " erinnerten ", " hätten ", "erinnert")
+    'Ich entwickelte eine Idee. -> er habe eine Idee entwickelt.
+    text = ersetzeVergangenheitsform(text, " entwickelte ", " habe ", "entwickelt")
+    'Das bedeutete nichts. -> es habe nichts bedeutet.
+    text = ersetzeVergangenheitsform(text, " bedeutete ", " habe ", "bedeutet")
+    'Die Zeichen bedeuteten nichts. -> sie hätten nichts bedeutet.
+    text = ersetzeVergangenheitsform(text, " bedeuteten ", " hätten ", "bedeutet")
+    'Ich bestätigte den Termin. -> er habe den Termin bestätigt.
+    text = ersetzeVergangenheitsform(text, " bestätigte ", " habe ", "bestätigt")
+    'Das Auto gehörte mir. -> es habe mir gehört.
+    text = ersetzeVergangenheitsform(text, " gehörte ", " habe ", "gehört")
+    'Die Autos gehörten mir. -> sie hätten mir gehört.
+    text = ersetzeVergangenheitsform(text, " gehörten ", " hätten ", "gehört")
+    'Ich definierte den Begriff. -> er habe den Begriff definiert.
+    text = ersetzeVergangenheitsform(text, " definierte ", " habe ", "definiert")
+    'Ich diskutierte das Problem. -> er habe das Problem diskutiert.
+    text = ersetzeVergangenheitsform(text, " diskutierte ", " habe ", "diskutiert")
+    'Ich installierte die Software. -> er habe die Software installiert.
+    text = ersetzeVergangenheitsform(text, " installierte ", " habe ", "installiert")
+    'Ich bemühte mich. -> er habe sich bemüht.
+    text = ersetzeVergangenheitsform(text, " bemühte ", " habe ", "bemüht")
+    'Wir bemühten uns. -> Sie hätten sich bemüht.
+    text = ersetzeVergangenheitsform(text, " bemühten ", " hätten ", "bemüht")
+    'Ich drehte mich. -> er habe sich gedreht.
+    text = ersetzeVergangenheitsform(text, " drehte ", " habe ", "gedreht")
+    'Wir drehten uns. -> Sie hätten sich gedreht.
+    text = ersetzeVergangenheitsform(text, " drehten ", " hätten ", "gedreht")
 
     VergangenheitsVerbenErsetzung = text
 
@@ -2917,7 +3021,7 @@ Function VerbenZusammenfuegung(ByVal textstelle As String, verbenpaar As String,
 Dim RegexObject As Object
 Set RegexObject = CreateObject("VBScript.RegExp")
 RegexObject.Global = True 'Nach mehreren Vorkommen suchen
-RegexObject.Pattern = verbenpaar
+RegexObject.pattern = verbenpaar
 VerbenZusammenfuegung = RegexObject.Replace(textstelle, zusammenfuegung)
 
 End Function
@@ -3032,6 +3136,9 @@ Function VerbenZusammenfuegen(text As String)
     text = VerbenZusammenfuegung(text, "davon gerannt", "davongerannt")
     text = VerbenZusammenfuegung(text, "heraus gerannt", "herausgerannt")
     text = VerbenZusammenfuegung(text, "vor genommen", "vorgenommen")
+    text = VerbenZusammenfuegung(text, "um gedreht", "umgedreht")
+    text = VerbenZusammenfuegung(text, "weg gerannt", "weggerannt")
+
     
 
     VerbenZusammenfuegen = text
@@ -3050,7 +3157,7 @@ Dim BelegstellenVerweis As String
 Set RegexObject = CreateObject("VBScript.RegExp")
 RegexObject.Global = False 'nicht nach mehreren Vorkommen suchen
 RegexObject.MultiLine = False 'nicht das Ende jeder Zeile anschauen
-RegexObject.Pattern = "\.\W*$" 'Entspricht dem letzten Punkt und einem oder mehreren Leerzeichen oder Umschlagzeichen am ende
+RegexObject.pattern = "\.\W*$" 'Entspricht dem letzten Punkt und einem oder mehreren Leerzeichen oder Umschlagzeichen am ende
 BelegstellenVerweis = "Ziff."
 BelegstelleHinzufuegen = RegexObject.Replace(textstelle, " (" + BelegstellenVerweis + Chr(160) + "). ")
 
@@ -3067,7 +3174,7 @@ Dim RegexObject As Object
 Set RegexObject = CreateObject("VBScript.RegExp")
 RegexObject.Global = False 'nicht nach mehreren Vorkommen suchen
 RegexObject.MultiLine = False 'nicht das Ende jeder Zeile anschauen
-RegexObject.Pattern = "[\?\.\W]*$" 'erfasst entweder ein Fragezeichen (?), einen Punkt (.) oder ein nicht alphanumerisches Zeichen (\W). Das *-Quantifier bedeutet, dass dieses Muster null oder mehrmals vorkommen kann.
+RegexObject.pattern = "[\?\.\W]*$" 'erfasst entweder ein Fragezeichen (?), einen Punkt (.) oder ein nicht alphanumerisches Zeichen (\W). Das *-Quantifier bedeutet, dass dieses Muster null oder mehrmals vorkommen kann.
 DoppelpunktHinzufuegen = RegexObject.Replace(textstelle, ": ")
 
 End Function
